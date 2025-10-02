@@ -131,8 +131,10 @@ These platforms provide excellent support for Node.js applications.
     *   `FRONTEND_URI`: The URL of your *deployed frontend* (e.g., `https://your-app-name.vercel.app`).
     *   `REDIRECT_URI`: The callback URL of your *deployed backend* (e.g., `https://your-backend-service.onrender.com/api/auth/callback`).
 
-### Final Step: Update Spotify Redirect URI
+### Final Step: Update Spotify Redirect URI for Production
 
-After deploying your backend, you must go back to your **Spotify Developer Dashboard**, open your app's **Settings**, and **add your production Redirect URI** to the list. Do not remove the `localhost` one, as you will need it for local development.
+After deploying your backend, you must go back to your **Spotify Developer Dashboard**, open your app's **Settings**, and **add your production `https://` Redirect URI** to the list.
 
-Your app will not work in production until this step is complete.
+**Important:** For production applications, Spotify requires all Redirect URIs to use `https://` for security. Your deployed backend service URL (e.g., `https://your-backend-service.onrender.com/api/auth/callback`) must be added here.
+
+Do not remove the `http://localhost:3001/api/auth/callback` URI, as you will still need it for local development. Your app will not work in production until this step is complete.
