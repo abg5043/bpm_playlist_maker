@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -19,14 +19,13 @@ app.use(session({
 // Routes
 const authRoutes = require('./src/routes/auth');
 const songsRoutes = require('./src/routes/songs');
-
-app.use('/api/auth', authRoutes);
-app.use('/api/songs', songsRoutes);
-
 const playlistRoutes = require('./src/routes/playlist');
-app.use('/api/playlist', playlistRoutes);
 
-app.get('/api', (req, res) => {
+app.use('/auth', authRoutes);
+app.use('/songs', songsRoutes);
+app.use('/playlist', playlistRoutes);
+
+app.get('/', (req, res) => {
   res.send('Backend server is running.');
 });
 

@@ -41,7 +41,7 @@ Follow these steps to set up and run the project on your local machine.
 4.  Go to your app's **Settings**.
 5.  In the **Redirect URIs** section, add the following URI exactly:
     ```
-    http://localhost:3001/api/auth/callback
+    http://127.0.0.1:3000/auth/callback
     ```
     This is crucial for the authentication flow to work locally.
 
@@ -56,16 +56,19 @@ Follow these steps to set up and run the project on your local machine.
     npm install
     ```
 3.  **Set up environment variables:**
-    Create a new file named `.env` in the `server` directory. Copy the contents of `server/.env.example` into it and fill in the values:
+    Create a new file named `.env` in the `server` directory and add the following, filling in your own credentials:
     ```env
     # Get these from your Spotify Developer Dashboard
     SPOTIFY_CLIENT_ID=your_spotify_client_id
     SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 
     # This must match the URI you set in the Spotify Dashboard
-    REDIRECT_URI=http://localhost:3001/api/auth/callback
+    REDIRECT_URI=http://127.0.0.1:3000/auth/callback
     # This is the default URL for the Vite frontend dev server
     FRONTEND_URI=http://localhost:5173
+
+    # Server Port
+    PORT=3000
 
     # Use a long, random string for security
     SESSION_SECRET=a_very_strong_and_secret_key
@@ -74,7 +77,7 @@ Follow these steps to set up and run the project on your local machine.
     ```bash
     npm run dev
     ```
-    The server will start on `http://localhost:3001` and will automatically restart on file changes.
+    The server will start on `http://localhost:3000` and will automatically restart on file changes.
 
 ### 4. Frontend Setup (`client/`)
 
@@ -106,35 +109,23 @@ This project is a monorepo, but the frontend and backend are deployed as two sep
 
 **Providers:** Vercel, Netlify
 
-These platforms are optimized for modern frontend frameworks like React and offer seamless deployment from a Git repository.
-
-**Setup Steps (Vercel/Netlify):**
-1.  Connect your Git repository to the provider.
-2.  When configuring the project, set the **Root Directory** to `client`.
-3.  The build command should be `npm run build` and the output directory is `dist`.
-4.  No environment variables are needed for the frontend to be deployed, as the API proxy in `vite.config.ts` will not be used in production. The frontend will make direct calls to your hosted backend API.
-
 ### Hosting the Backend (`server/`)
 
 **Providers:** Railway, Render
 
-These platforms provide excellent support for Node.js applications.
-
-**Setup Steps (Railway/Render):**
-1.  Connect your Git repository.
-2.  When configuring the service, set the **Root Directory** to `server`.
-3.  The start command should be `npm start`.
-4.  **Crucially, you must set up the environment variables in your provider's dashboard:**
-    *   `SPOTIFY_CLIENT_ID`: Your Spotify Client ID.
-    *   `SPOTIFY_CLIENT_SECRET`: Your Spotify Client Secret.
-    *   `SESSION_SECRET`: A new, strong random string for production.
+**Setup Steps:**
+1.  When deploying the backend, set the **Root Directory** to `server`.
+2.  Set up the following environment variables in your provider's dashboard:
+    *   `SPOTIFY_CLIENT_ID`
+    *   `SPOTIFY_CLIENT_SECRET`
+    *   `SESSION_SECRET` (use a new, strong random string)
     *   `FRONTEND_URI`: The URL of your *deployed frontend* (e.g., `https://your-app-name.vercel.app`).
-    *   `REDIRECT_URI`: The callback URL of your *deployed backend* (e.g., `https://your-backend-service.onrender.com/api/auth/callback`).
+    *   `REDIRECT_URI`: The callback URL of your *deployed backend* (e.g., `https://your-backend-service.onrender.com/auth/callback`).
 
 ### Final Step: Update Spotify Redirect URI for Production
 
 After deploying your backend, you must go back to your **Spotify Developer Dashboard**, open your app's **Settings**, and **add your production `https://` Redirect URI** to the list.
 
-**Important:** For production applications, Spotify requires all Redirect URIs to use `https://` for security. Your deployed backend service URL (e.g., `https://your-backend-service.onrender.com/api/auth/callback`) must be added here.
+**Important:** For production applications, Spotify requires all Redirect URIs to use `https://` for security. Your deployed backend service URL (e.g., `https://your-backend-service.onrender.com/auth/callback`) must be added here.
 
-Do not remove the `http://localhost:3001/api/auth/callback` URI, as you will still need it for local development. Your app will not work in production until this step is complete.
+Do not remove the `http://127.0.0.1:3000/auth/callback` URI, as you will still need it for local development. Your app will not work in production until this step is complete.

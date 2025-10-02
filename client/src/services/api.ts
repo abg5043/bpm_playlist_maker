@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api', // This will be proxied by Vite to the backend
+  // baseURL is no longer needed as we are proxying specific top-level routes
   withCredentials: true, // Important for sending session cookies
 });
 
